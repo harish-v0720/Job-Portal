@@ -13,9 +13,7 @@ import useGetCompanyById from "@/hooks/useGetCompanyById";
 
 const CompanySetup = () => {
   const params = useParams();
-
-  console.log(params.id);
-  useGetCompanyById(params.id);
+  useGetCompanyById({ companyId: params.id });
 
   const [input, setInput] = useState({
     companyName: "",
@@ -44,6 +42,7 @@ const CompanySetup = () => {
   };
 
   const submitHandler = async (e) => {
+    console.log("first");
     e.preventDefault();
     const formData = new FormData();
     formData.append("companyName", input.companyName);
@@ -79,7 +78,6 @@ const CompanySetup = () => {
   };
 
   useEffect(() => {
-    console.log("first", singleCompany);
     setInput({
       companyName: singleCompany.name || "",
       description: singleCompany.description || "",
@@ -96,6 +94,7 @@ const CompanySetup = () => {
         <form onSubmit={submitHandler}>
           <div className="flex items-center gap-5 p-8">
             <Button
+              type="button"
               className="flex items-center gap-2 text-gray-500 font-semibold"
               variant="outline"
               onClick={backButtonHandler}
