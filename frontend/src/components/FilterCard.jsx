@@ -18,10 +18,6 @@ const filterData = [
       "IOS Developer",
     ],
   },
-  {
-    filterType: "Salary",
-    array: ["0-40k", "40k-1L", "1L-5L"],
-  },
 ];
 
 const FilterCard = () => {
