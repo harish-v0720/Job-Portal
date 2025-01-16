@@ -27,7 +27,6 @@ const JobDescription = () => {
         `${APPLICATION_API_END_POINT}/apply/${jobId}`,
         { withCredentials: true }
       );
-      console.log(res);
       if (res.data.success) {
         setIsApplied(true); // update the local state
         const updatedSingleJob = {

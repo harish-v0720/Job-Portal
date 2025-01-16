@@ -129,8 +129,6 @@ export const getAdminJobs = async (req, res) => {
 
 export const updateJob = async (req, res) => {
   try {
-    console.log({ body: req.body, id: req.params.id, data: req.data });
-
     const {
       title,
       description,
@@ -156,8 +154,6 @@ export const updateJob = async (req, res) => {
     const job = await Job.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
     });
-
-    console.log(job);
 
     if (!job) {
       return res.status(404).json({
