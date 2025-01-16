@@ -27,8 +27,8 @@ const HeroSection = () => {
           <span className="text-[#6A38C2]">Dream Jobs</span>{" "}
         </h1>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium,
-          beatae numquam voluptates vel velit assumenda.
+          A digital platform designed to connect Job seekers with Employers.{" "}
+          <span className="text-[#F83002]">Your Career, Our Priority</span> .
         </p>
         <div
           className="flex w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full items-center mx-auto
