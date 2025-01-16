@@ -70,7 +70,7 @@ const Profile = () => {
           {isResume ? (
             <a
               target="_blank"
-              href="https://youtube.com/@patelmernstack"
+              href={user?.profile?.resume}
               className="text-blue-500 w-full hover:underline cursor-pointer"
             >
               {user?.profile?.resumeOriginalName}

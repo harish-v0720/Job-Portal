@@ -61,7 +61,7 @@ const AdminJobUpdate = () => {
     formData.append("salary", input.salary);
     formData.append("location", input.location);
     formData.append("jobType", input.jobType);
-    formData.append("experience", input.experience);
+    formData.append("experienceLevel", input.experience);
     formData.append("position", input.position);
 
     try {
@@ -71,7 +71,7 @@ const AdminJobUpdate = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
           withCredentials: true,
         }

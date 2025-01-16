@@ -129,6 +129,8 @@ export const getAdminJobs = async (req, res) => {
 
 export const updateJob = async (req, res) => {
   try {
+    console.log({ body: req.body, id: req.params.id, data: req.data });
+
     const {
       title,
       description,
@@ -155,6 +157,8 @@ export const updateJob = async (req, res) => {
       new: true,
     });
 
+    console.log(job);
+
     if (!job) {
       return res.status(404).json({
         message: "Job not found",
@@ -163,8 +167,7 @@ export const updateJob = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Job infomation updated",
-      job,
+      message: "Job information updated",
       success: true,
     });
   } catch (error) {
