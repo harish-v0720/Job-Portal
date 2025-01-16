@@ -1,10 +1,12 @@
 import React from "react";
 import LatestJobCards from "./LatestJobCards";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 //const randomJobs = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const LatestJobs = () => {
+  const navigate = useNavigate();
   const { allJobs } = useSelector((store) => store.job);
 
   return (

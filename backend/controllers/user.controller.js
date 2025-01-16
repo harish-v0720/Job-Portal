@@ -15,6 +15,12 @@ export const register = async (req, res) => {
     }
 
     const file = req.file;
+    if (!file) {
+      return res.status(400).json({
+        message: "Upload Profile Photo",
+        success: false,
+      });
+    }
     const fileUri = getDataUri(file);
     const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
@@ -130,11 +136,15 @@ export const updateProfile = async (req, res) => {
     const file = req.file;
     // cloudinary come here --------
 
-    const fileUri = getDataUri(file);
+    let cloudResponse = "";
 
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
-      resource_type: "raw", // Explicitly set for non-image files like PDFs
-    });
+    if (file) {
+      const fileUri = getDataUri(file);
+
+      cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+        resource_type: "raw", // Explicitly set for non-image files like PDFs
+      });
+    }
 
     let skillsArray;
     if (skills) {

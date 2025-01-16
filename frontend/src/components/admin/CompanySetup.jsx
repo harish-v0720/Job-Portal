@@ -42,7 +42,6 @@ const CompanySetup = () => {
   };
 
   const submitHandler = async (e) => {
-    console.log("first");
     e.preventDefault();
     const formData = new FormData();
     formData.append("companyName", input.companyName);
@@ -92,7 +91,7 @@ const CompanySetup = () => {
       <Navbar />
       <div className="max-w-xl mx-auto my-10">
         <form onSubmit={submitHandler}>
-          <div className="flex items-center gap-5 p-8">
+          <div className="flex items-center gap-20 p-8 my-10">
             <Button
               type="button"
               className="flex items-center gap-2 text-gray-500 font-semibold"
