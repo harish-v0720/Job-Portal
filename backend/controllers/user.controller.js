@@ -169,12 +169,12 @@ export const updateProfile = async (req, res) => {
     const file = req.file;
     // cloudinary come here --------
 
-    let cloudResponse = "";
+    let resumeUploadResponse = "";
 
     if (file) {
       const fileUri = getDataUri(file);
 
-      cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+      resumeUploadResponse = await cloudinary.uploader.upload(fileUri.content, {
         resource_type: "raw", // Explicitly set for non-image files like PDFs
       });
     }
@@ -200,8 +200,8 @@ export const updateProfile = async (req, res) => {
     if (skills) user.profile.skills = skillsArray;
 
     // resume comes later here------
-    if (cloudResponse) {
-      user.profile.resume = cloudResponse.secure_url + ".pdf"; // save the cloudinary url
+    if (resumeUploadResponse) {
+      user.profile.resume = resumeUploadResponse.secure_url + ".pdf"; // save the cloudinary url
       user.profile.resumeOriginalName = file.originalname; // save the original file name
     }
 
