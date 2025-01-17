@@ -66,7 +66,7 @@ export const register = async (req, res) => {
       password: hashPassword,
       role,
       profile: {
-        profilePhoto: cloudResponse.secure_url,
+        profilePhoto: profileUploadResponse.secure_url,
       },
       ...(role === "student" && { resume: resumeUrl }), // Add resume only for students
     });
