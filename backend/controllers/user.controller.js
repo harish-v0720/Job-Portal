@@ -9,7 +9,7 @@ export const register = async (req, res) => {
     const { fullName, email, phoneNumber, password, role } = req.body;
     if (!fullName || !email || !phoneNumber || !password || !role) {
       return res.status(400).json({
-        message: "Something is missing",
+        message: "All Fields are required",
         success: false,
       });
     }
@@ -22,15 +22,41 @@ export const register = async (req, res) => {
       });
     }
     const fileUri = getDataUri(file);
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    const profileUploadResponse = await cloudinary.uploader.upload(
+      fileUri.content
+    );
 
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
-        message: "User alrady exists",
+        message: "User already exists",
         success: false,
       });
     }
+
+    // Handle student-specific logic
+
+    let resumeUrl = null;
+    if (role === "student") {
+      const resumeFile = req.files?.resume; // Assuming `resume` is uploaded as a separate field
+      if (!resumeFile) {
+        return res.status(400).json({
+          message: "Students must upload a resume",
+          success: false,
+        });
+      }
+
+      // Upload resume
+      const resumeUri = getDataUri(resumeFile);
+      const resumeUploadResponse = await cloudinary.uploader.upload(
+        resumeUri.content,
+        {
+          resource_type: "raw", // For files like PDFs
+        }
+      );
+      resumeUrl = resumeUploadResponse.secure_url;
+    }
+
     const hashPassword = await bcrypt.hash(password, 10);
 
     await User.create({
@@ -42,6 +68,7 @@ export const register = async (req, res) => {
       profile: {
         profilePhoto: cloudResponse.secure_url,
       },
+      ...(role === "student" && { resume: resumeUrl }), // Add resume only for students
     });
 
     return res.status(200).json({
