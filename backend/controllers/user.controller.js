@@ -76,7 +76,12 @@ export const register = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in register endpoint:", error); // Log the error
+    return res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      error: error.message, // Send error details for debugging
+    });
   }
 };
 
