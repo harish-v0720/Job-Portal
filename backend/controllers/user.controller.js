@@ -67,8 +67,8 @@ export const register = async (req, res) => {
       role,
       profile: {
         profilePhoto: profileUploadResponse.secure_url,
+        ...(role === "student" && { resume: resumeUrl }),
       },
-      ...(role === "student" && { resume: resumeUrl }), // Add resume only for students
     });
 
     return res.status(200).json({
