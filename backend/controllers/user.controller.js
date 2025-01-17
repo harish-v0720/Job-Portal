@@ -14,18 +14,6 @@ export const register = async (req, res) => {
       });
     }
 
-    const file = req.file;
-    if (!file) {
-      return res.status(400).json({
-        message: "Upload Profile Photo",
-        success: false,
-      });
-    }
-    const fileUri = getDataUri(file);
-    const profileUploadResponse = await cloudinary.uploader.upload(
-      fileUri.content
-    );
-
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
@@ -34,24 +22,37 @@ export const register = async (req, res) => {
       });
     }
 
+    const file = req.files?.file?.[0];
+    if (!file) {
+      return res.status(400).json({
+        message: "Upload Profile Photo",
+        success: false,
+      });
+    }
+
+    const fileUri = getDataUri(file);
+    const profileUploadResponse = await cloudinary.uploader.upload(
+      fileUri.content
+    );
+
     // Handle student-specific logic
 
     let resumeUrl = null;
     if (role === "student") {
-      const resumeFile = req.files?.resume; // Assuming `resume` is uploaded as a separate field
+      const resumeFile = req.files?.resume?.[0]; // Resume file
       if (!resumeFile) {
         return res.status(400).json({
-          message: "Students must upload a resume",
+          message: "Resume is required for students",
           success: false,
         });
       }
 
-      // Upload resume
+      // Upload resume to Cloudinary
       const resumeUri = getDataUri(resumeFile);
       const resumeUploadResponse = await cloudinary.uploader.upload(
         resumeUri.content,
         {
-          resource_type: "raw", // For files like PDFs
+          resource_type: "raw", // For non-image files like PDFs
         }
       );
       resumeUrl = resumeUploadResponse.secure_url;
