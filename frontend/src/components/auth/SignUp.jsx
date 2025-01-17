@@ -20,18 +20,30 @@ const SignUp = () => {
     password: "",
     role: "",
     file: "",
+    resume: "",
   });
+
+  const [isStudent, setIsStudent] = useState(false);
 
   const { loading, user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setInput({ ...input, [name]: value });
+
+    if (name === "role") {
+      setIsStudent(value === "student");
+    }
   };
 
   const changeFileHandler = (e) => {
     setInput({ ...input, file: e.target.files?.[0] });
+  };
+
+  const changeResumeHandler = (e) => {
+    setInput({ ...input, resume: e.target.files?.[0] });
   };
 
   const submitHandler = async (e) => {
@@ -45,6 +57,10 @@ const SignUp = () => {
     if (input.file) {
       formData.append("file", input.file);
     }
+    if (isStudent && input.resume) {
+      formData.append("resume", input.resume);
+    }
+
     try {
       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
@@ -88,7 +104,7 @@ const SignUp = () => {
               value={input.fullName}
               onChange={changeEventHandler}
               name="fullName"
-              placeholder="harish"
+              placeholder=""
             />
           </div>
           <div className="my-2">
@@ -98,17 +114,17 @@ const SignUp = () => {
               value={input.email}
               name="email"
               onChange={changeEventHandler}
-              placeholder="harish@gmail.com"
+              placeholder=""
             />
           </div>
           <div className="my-2">
             <Label>Phone Number</Label>
             <Input
-              type=""
+              type="text"
               value={input.phoneNumber}
               name="phoneNumber"
               onChange={changeEventHandler}
-              placeholder="8008800800"
+              placeholder=""
             />
           </div>
           <div className="my-2">
@@ -156,6 +172,18 @@ const SignUp = () => {
               />
             </div>
           </div>
+          {isStudent && (
+            <div className="my-2">
+              <Label>Upload Resume</Label>
+              <Input
+                accept=".pdf,.doc,.docx"
+                type="file"
+                onChange={changeResumeHandler}
+                className="cursor-pointer"
+              />
+            </div>
+          )}
+
           {loading ? (
             <Button className="w-full my-4">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
